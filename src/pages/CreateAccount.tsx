@@ -1,39 +1,63 @@
 import { useContext, useState } from 'react';
 import { LoginContext } from '../context/LoginContext';
-
+import axios from 'axios';
 const CreateAccount = () => {
   const { username, password, setUsername, setPassword } = useContext(LoginContext);
   const [repeatPassword, setRepeatPassword] = useState('');
   const [email, setEmail] = useState('');
 
-  const handleRegister = async (e:any) => {
+  const handleRegister =  (e:any) => {
     e.preventDefault();
-
+	const userData = {
+		username,
+		password,
+		email,
+	};
+	if(username==='' || password==='' || email==='' ||repeatPassword ==='') return;
+	if(password === repeatPassword){
+		axios.post('http://localhost:3001/api/data', userData)
+		.then((response) => {
+			console.log(response.status);
+		if(response.request.status===409){
+		
+			
+				alert('User Is already exist')
+				setUsername('');
+				setRepeatPassword('');
+				setPassword('');
+				setEmail('');
+		}
+		  // Check the response and handle accordingly
+		  if (response.data.success) {
+			console.log('User created');
+			setUsername('');
+			setRepeatPassword('');
+			setPassword('');
+			setEmail('');
+		  } else {
+			console.log('Error:', response.data.message);
+			setUsername('');
+			setRepeatPassword('');
+			setPassword('');
+			setEmail('');
+		  }
+		})
+		.catch((error) => {
+		  console.log('Error:', error);
+		});
+	}else{
+		alert('hasla nie sa takie same');
+	}
     // Check if the user profile exists
-    try {
-      const response = await fetch('http://localhost:3001/api/data', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-          email: email,
-        }),
-      });
+	
+};
 
-      if (response.ok) {
-        // User profile created successfully
-        console.log('User created');
-      } else {
+    //   if (response.ok) {
+    //     // User profile created successfully
+    //     console.log('User created');
+    //   } else {
         // Error occurred, handle the appropriate error or display a message
-      }
-    } catch (error) {
-      // Handle any errors that occur during the API request
-      console.error(error);
-    }
-  };
+
 
   return (
     <div className="grid justify-center align-middle">
