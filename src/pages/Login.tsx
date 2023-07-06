@@ -1,9 +1,24 @@
 import {useContext} from 'react'
 import { LoginContext } from '../context/LoginContext'
+import { useNavigate } from 'react-router-dom'
+
 const Login = () => {
-	const wyslij=(e:any)=>{
+	const navigate= useNavigate();
+	const Logowanie=(e:any)=>{
 		e.preventDefault();
-		console.log('dziala');
+		fetch('http://localhost:3001/api/data')
+		.then(res =>res.json())
+		.then(data => {
+			const userExists = data.some((obj:any) => obj.username === username && obj.password === password);
+			if(userExists){
+				alert(`Logged in to ${username}`)
+				navigate('/UserInfo')
+			}else{
+				console.log('User does not Exist try again');	
+			}
+		}).catch((error) => {
+			console.log('Error:', error);
+		  });
 		
 	}
 	const {username,setUsername,password,setPassword} = useContext(LoginContext);
@@ -11,7 +26,7 @@ const Login = () => {
 	<div className="grid justify-center align-middle">
 		
           <div>
-		  <form onSubmit={wyslij}>
+		  <form onSubmit={Logowanie}>
 			<span className='flex justify-center'></span><br/>
 			<div className='text-center'>Nazwa: 
 				<input 

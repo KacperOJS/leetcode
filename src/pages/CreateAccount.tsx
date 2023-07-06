@@ -1,11 +1,12 @@
 import { useContext, useState } from 'react';
 import { LoginContext } from '../context/LoginContext';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const CreateAccount = () => {
   const { username, password, setUsername, setPassword } = useContext(LoginContext);
   const [repeatPassword, setRepeatPassword] = useState('');
   const [email, setEmail] = useState('');
-
+  const navigate = useNavigate();
   const handleRegister =  (e:any) => {
     e.preventDefault();
 	const userData = {
@@ -19,8 +20,6 @@ const CreateAccount = () => {
 		.then((response) => {
 			console.log(response.status);
 		if(response.request.status===409){
-		
-			
 				alert('User Is already exist')
 				setUsername('');
 				setRepeatPassword('');
@@ -29,7 +28,8 @@ const CreateAccount = () => {
 		}
 		  // Check the response and handle accordingly
 		  if (response.data.success) {
-			console.log('User created');
+			alert('User created')
+			navigate('/login')
 			setUsername('');
 			setRepeatPassword('');
 			setPassword('');
