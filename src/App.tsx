@@ -7,6 +7,7 @@ import CreateAccount from './pages/CreateAccount';
 import UserInfo from './pages/UserInfo';
 import { LoginContext } from './context/LoginContext';
 import ProtectedRoute from './ProtectedRoute'; // Updated import path
+import Logout from './pages/logout';
 
 const App = () => {
   const [username, setUsername] = useState('');
@@ -21,6 +22,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/create-account" element={<CreateAccount />} />
+          <Route path="/home" element={<Logout />} />
           {/* Add more routes as needed */}
           <Route
             path="/user-info"
