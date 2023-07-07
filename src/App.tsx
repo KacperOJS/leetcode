@@ -1,10 +1,12 @@
-import  { useState } from 'react';
+// App.tsx
+import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header2 from './pages/Header2';
 import Login from './pages/Login';
 import CreateAccount from './pages/CreateAccount';
 import UserInfo from './pages/UserInfo';
 import { LoginContext } from './context/LoginContext';
+import ProtectedRoute from './ProtectedRoute'; // Updated import path
 
 const App = () => {
   const [username, setUsername] = useState('');
@@ -21,7 +23,14 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/create-account" element={<CreateAccount />} />
           {/* Add more routes as needed */}
-          <Route path="/user-info" element={<UserInfo />} />
+          <Route
+            path="/user-info"
+            element={
+              <ProtectedRoute isAuthenticated={loggedIn}>
+                <UserInfo />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
 
         {/* Rest of the app */}
