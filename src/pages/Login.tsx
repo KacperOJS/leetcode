@@ -3,6 +3,7 @@ import { LoginContext } from '../context/LoginContext'
 import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
+	const {username,setUsername,password,setPassword,setLoggedIn} = useContext(LoginContext);
 	const navigate= useNavigate();
 	const Logowanie=(e:any)=>{
 		e.preventDefault();
@@ -12,6 +13,7 @@ const Login = () => {
 			const userExists = data.some((obj:any) => obj.username === username && obj.password === password);
 			if(userExists){
 				alert(`Logged in to ${username}`)
+				setLoggedIn(true)
 				navigate('/UserInfo')
 			}else{
 				console.log('User does not Exist try again');	
@@ -21,7 +23,7 @@ const Login = () => {
 		  });
 		
 	}
-	const {username,setUsername,password,setPassword} = useContext(LoginContext);
+
   return (
 	<div className="grid justify-center align-middle">
 		

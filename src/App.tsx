@@ -1,5 +1,5 @@
 // App.tsx
-import { useState } from 'react';
+import {useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header2 from './pages/Header2';
 import Login from './pages/Login';
@@ -12,7 +12,6 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
-
   return (
     <LoginContext.Provider
       value={{ username, setUsername, password, setPassword, loggedIn, setLoggedIn }}
