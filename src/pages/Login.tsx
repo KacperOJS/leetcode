@@ -14,7 +14,7 @@ const Login = () => {
 			if(userExists){
 				alert(`Logged in to ${username}`)
 				setLoggedIn(true)
-				navigate('/UserInfo')
+				navigate('/userinfo')
 			}else{
 				console.log('User does not Exist try again');	
 			}
