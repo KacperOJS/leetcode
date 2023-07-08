@@ -7,6 +7,7 @@ import CreateAccount from './pages/CreateAccount';
 import UserInfo from './pages/UserInfo';
 import { LoginContext } from './context/LoginContext';
 import Logout from './pages/Logout';
+import Home from './pages/Home';
 
 const App = () => {
   const [username, setUsername] = useState('');
@@ -23,11 +24,8 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/logout" element={<Logout />} />
-          {/* Add more routes as needed */}
-          <Route
-            path="/userinfo"
-            element={<UserInfo />}
-          />
+          <Route path="/userinfo" element={<UserInfo />}/>
+		  <Route path='/home' element={<Home/>}/>
         </Routes>
       </Router>
     </LoginContext.Provider>
