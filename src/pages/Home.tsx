@@ -1,98 +1,46 @@
-// import Product from './Product';
+import { useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';
-interface Data {
-  id:string,
-  name:string,
-  href:string,
-  imageSrc: string,
-  imageAlt:string,
-  price: string,
-  color: string,
+
+interface Product {
+  id: string;
+  name: string;
+  href: string;
+  imageSrc: string;
+  imageAlt: string;
+  price: string;
+  color: string;
 }
 
 const Home = () => {
-  const products: Data[] = [
-	{
-		id: uuidV4(),
-		name: 'Basic Tee',
-		href: '#',
-		imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-		imageAlt: "Front of men's Basic Tee in black.",
-		price: '$35',
-		color: 'Black',
-	  },
-	  {
-		id: uuidV4(),
-		name: 'Basic Tee',
-		href: '#',
-		imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-		imageAlt: "Front of men's Basic Tee in black.",
-		price: '$35',
-		color: 'Black',
-	  },
-	  {
-		id: uuidV4(),
-		name: 'Basic Tee',
-		href: '#',
-		imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-		imageAlt: "Front of men's Basic Tee in black.",
-		price: '$35',
-		color: 'Black',
-	  },
-	  {
-		id: uuidV4(),
-		name: 'Basic Tee',
-		href: '#',
-		imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-		imageAlt: "Front of men's Basic Tee in black.",
-		price: '$35',
-		color: 'Black',
-	  },
-	  {
-		id: uuidV4(),
-		name: 'Basic Tee',
-		href: '#',
-		imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-		imageAlt: "Front of men's Basic Tee in black.",
-		price: '$35',
-		color: 'Black',
-	  },
-	  {
-		id: uuidV4(),
-		name: 'Basic Tee',
-		href: '#',
-		imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-		imageAlt: "Front of men's Basic Tee in black.",
-		price: '$35',
-		color: 'Black',
-	  },
-	  {
-		id: uuidV4(),
-		name: 'Basic Tee',
-		href: '#',
-		imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-		imageAlt: "Front of men's Basic Tee in black.",
-		price: '$35',
-		color: 'Black',
-	  },
-	  {
-		id: uuidV4(),
-		name: 'Basic Tee',
-		href: '#',
-		imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-		imageAlt: "Front of men's Basic Tee in black.",
-		price: '$35',
-		color: 'Black',
-	  },
-	  
+  const [cartItems, setCartItems] = useState<Product[]>([]);
+
+  const products: Product[] = [
+    {
+      id: uuidV4(),
+      name: 'Basic Tee',
+      href: '#',
+      imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
+      imageAlt: "Front of men's Basic Tee in black.",
+      price: '$35',
+      color: 'Black',
+    },
     // Add more products as needed
   ];
+
+  const addToCart = (product: Product) => {
+    setCartItems((prevItems) => [...prevItems, product]);
+  };
+
+  const removeFromCart = (productId: string) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== productId));
+	console.log(productId);
+	
+  };
 
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">Customers also purchased</h2>
-
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
             <div key={product.id} className="group relative">
@@ -105,22 +53,53 @@ const Home = () => {
               </div>
               <div className="mt-4 flex justify-between">
                 <div>
-                  <h3 className="text-sm text-gray-700">
-                    <a href={product.href}>
-                      <span aria-hidden="true" className="absolute inset-0" />
-                      {product.name}
-                    </a>
-                  </h3>
+                  <p className="text-sm text-gray-700">
+				  <button
+                  className="ml-12 text-sm font-medium text-gray-900"
+                  onClick={() => addToCart(product)}
+                >
+                  Add to Cart
+                </button>
+                <button
+                  className="ml-5 text-sm font-medium text-gray-900"
+                  onClick={() => removeFromCart(product.id)}
+                >
+                  Remove from Cart
+                </button>
+                  </p>
                   <p className="mt-1 text-sm text-gray-500">{product.color}</p>
                 </div>
                 <p className="text-sm font-medium text-gray-900">{product.price}</p>
+              </div>
+              <div className="flex mt-4 justify-between">
+         
               </div>
             </div>
           ))}
         </div>
       </div>
+      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+        <h2 className="text-2xl font-bold tracking-tight text-gray-900">Shopping Cart</h2>
+        {cartItems.length === 0 ? (
+          <p>Your cart is empty.</p>
+        ) : (
+          <ul>
+            {cartItems.map((item) => (
+              <li key={item.id}>
+                <div>
+                  <img src={item.imageSrc} alt={item.imageAlt} className="h-16 w-16" />
+                </div>
+                <div>
+                  <p>{item.name}</p>
+                  <p>{item.price}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
-  )
+  );
 };
 
 export default Home;
