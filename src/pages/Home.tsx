@@ -15,7 +15,6 @@ const Home = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [cartItems, setCartItems] = useState<Product[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
-
   useEffect(() => {
     // Generate products with unique ids
     const updatedProducts: Product[] = [
@@ -36,6 +35,13 @@ const Home = () => {
 
   const addToCart = (product: Product) => {
     setCartItems((prevItems) => [...prevItems, product]);
+	setIsOpen(true)
+	console.log(cartItems);
+	console.log(isOpen);
+	
+	
+
+	
   };
 
   const removeFromCart = (productId: string) => {
@@ -86,7 +92,7 @@ const Home = () => {
       </div>
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">Shopping Cart</h2>
-		{cartItems ? <Example/> : cartItems >0 }
+		{cartItems ? <Example  isOpen={isOpen} setIsOpen={setIsOpen}/> : cartItems > 0 }
       </div>
     </div>
   );
