@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { v4 as uuidV4 } from 'uuid';
-
+import Example from './ShoppingCart';
 interface Product {
   id: string;
   name: string;
@@ -12,20 +12,27 @@ interface Product {
 }
 
 const Home = () => {
+  const [isOpen, setIsOpen] = useState(false)
   const [cartItems, setCartItems] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
-  const products: Product[] = [
-    {
-      id: uuidV4(),
-      name: 'Basic Tee',
-      href: '#',
-      imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-      imageAlt: "Front of men's Basic Tee in black.",
-      price: '$35',
-      color: 'Black',
-    },
-    // Add more products as needed
-  ];
+  useEffect(() => {
+    // Generate products with unique ids
+    const updatedProducts: Product[] = [
+      {
+        id: uuidV4(),
+        name: 'Basic Tee',
+        href: '#',
+        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
+        imageAlt: "Front of men's Basic Tee in black.",
+        price: '$35',
+        color: 'Black',
+      },
+      // Add more products as needed
+    ];
+
+    setProducts(updatedProducts);
+  }, []);
 
   const addToCart = (product: Product) => {
     setCartItems((prevItems) => [...prevItems, product]);
@@ -33,8 +40,7 @@ const Home = () => {
 
   const removeFromCart = (productId: string) => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== productId));
-	console.log(productId);
-	
+    console.log(productId);
   };
 
   return (
@@ -80,23 +86,7 @@ const Home = () => {
       </div>
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">Shopping Cart</h2>
-        {cartItems.length === 0 ? (
-          <p>Your cart is empty.</p>
-        ) : (
-          <ul>
-            {cartItems.map((item) => (
-              <li key={item.id}>
-                <div>
-                  <img src={item.imageSrc} alt={item.imageAlt} className="h-16 w-16" />
-                </div>
-                <div>
-                  <p>{item.name}</p>
-                  <p>{item.price}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+		{cartItems ? <Example/> : cartItems >0 }
       </div>
     </div>
   );

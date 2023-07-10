@@ -28,7 +28,7 @@ const products = [
 ]
 
 export default function Example() {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
 
   return (
     <Transition.Root show={open} as={Fragment}>
