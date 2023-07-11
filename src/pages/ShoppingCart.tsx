@@ -4,7 +4,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 
 const products = [
   {
-	id:1,
+	id:'1',
 	name: 'Basic Tee',
 	href: '#',
 	imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
@@ -14,7 +14,7 @@ const products = [
 	quantity: 1,
   },
   {
-	id:2,
+	id:'2',
 	name: 'Basic Tee',
 	href: '#',
 	imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
@@ -34,9 +34,15 @@ console.log(totalAmount);
 interface ExampleProps {
 	isOpen: boolean;
 	setIsOpen: (isOpen: boolean) => void;
+	removeFromCart: (productId: string) => void;
+
   }
-export default function Example({ isOpen, setIsOpen }: ExampleProps) {
+export default function Example({ isOpen, setIsOpen, removeFromCart: removeCartItem }: ExampleProps) {
 //   const [open, setOpen] = useState(false)
+const removeFromCart = (productId: string) => {
+    removeCartItem(productId);
+  };
+  
 
   return (
     <Transition.Root show={isOpen} as={Fragment}>
@@ -112,7 +118,8 @@ export default function Example({ isOpen, setIsOpen }: ExampleProps) {
                                       <button
                                         type="button"
                                         className="font-medium text-indigo-600 hover:text-indigo-500"
-                                      >
+										onClick={() => removeFromCart(product.id)}
+										>
                                         Remove
                                       </button>
                                     </div>
