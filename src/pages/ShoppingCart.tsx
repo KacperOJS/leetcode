@@ -1,60 +1,36 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
-
-const products = [
-  {
-    id: '1',
-    name: 'Basic Tee',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '$35.00',
-    color: 'Black',
-    quantity: 1,
-  },
-  {
-    id: '2',
-    name: 'Basic Tee',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '$35.00',
-    color: 'Black',
-    quantity: 1,
-  },
-  // More products...
-];
+import { Product } from './Types';
 
 interface ExampleProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   removeFromCart: (productId: string) => void;
-//   addToCart:(product:string)=>void; 
+  addToCart: (product: Product) => void;
+  products: Product[];
 }
 
-const Example = ({ isOpen, setIsOpen, removeFromCart, }: ExampleProps) => {
-  const [cartProducts, setCartProducts] = useState<any>([...products]);
+const Example = ({ isOpen, setIsOpen, removeFromCart, addToCart, products }: ExampleProps) => {
+  const [cartProducts, setCartProducts] = useState<Product[]>([]);
+  const totalAmount = cartProducts.reduce((total: number, product: any) => total + parseFloat(product.price.slice(1)), 0);
 
-  const totalAmount = cartProducts.reduce(
-    (total: number, product: any) => total + parseFloat(product.price.slice(1)),
-    0
-  );
-  if(totalAmount === 0) {
-	setIsOpen(false);
-  }
-//   const PassingDataToObject =()=>{
-// 	setCartItems((prevItems) => [...prevItems, product]);
-// 	setIsOpen(true)
-// 	console.log(cartItems);
-// 	console.log(isOpen);
-//   }
-  
+  useEffect(() => {
+    if (totalAmount === 0) {
+      setIsOpen(false);
+    }
+  }, [totalAmount, setIsOpen]);
 
   const handleRemoveFromCart = (productId: string) => {
     const updatedCartProducts = cartProducts.filter((product: any) => product.id !== productId);
     setCartProducts(updatedCartProducts);
   };
+
+  const handleAddToCart = (product: Product) => {
+    setCartProducts((prevProducts) => [...prevProducts, product]);
+    setIsOpen(true);
+  };
+
 
   return (
     <Transition.Root show={isOpen} as={Fragment}>

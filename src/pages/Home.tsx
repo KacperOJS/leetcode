@@ -1,51 +1,52 @@
-import { useState, useEffect } from 'react';
-import { v4 as uuidV4 } from 'uuid';
+import { useState } from 'react';
 import Example from './ShoppingCart';
-
-
-interface Product {
-  id: string;
-  name: string;
-  href: string;
-  imageSrc: string;
-  imageAlt: string;
-  price: string;
-  color: string;
-}
+import { Product } from './Types';
 
 const Home = () => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   const [cartItems, setCartItems] = useState<Product[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
-  useEffect(() => {
-    // Generate products with unique ids
-    const updatedProducts: Product[] = [
-      {
-        id: uuidV4(),
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-      },
-      // Add more products as needed
-    ];
-
-    setProducts(updatedProducts);
-  }, []);
+  const [products] = useState<Product[]>([
+    {
+      id: '1',
+      name: 'Basic Tee',
+      href: '#',
+      imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
+      imageAlt: "Front of men's Basic Tee in black.",
+      price: '$35.00',
+      color: 'Black',
+      quantity: 1,
+    },
+    {
+      id: '2',
+      name: 'Basic Tee',
+      href: '#',
+      imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
+      imageAlt: "Front of men's Basic Tee in black.",
+      price: '$35.00',
+      color: 'Black',
+      quantity: 1,
+    },
+    // More products...
+  ]);
+  
+  const [cartProducts, setCartProducts] = useState<Product[]>([]); // Add this line
 
   const addToCart = (product: Product) => {
     setCartItems((prevItems) => [...prevItems, product]);
-	setIsOpen(true)
-	console.log(cartItems);
-	console.log(isOpen);
+    setIsOpen(true);
+    setCartProducts((prevProducts) => [...prevProducts, product]);
   };
 
   const removeFromCart = (productId: string) => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== productId));
-    console.log(productId);
   };
+  
+  const handleAddToCart = (product: Product) => {
+    setCartItems((prevItems) => [...prevItems, product]);
+    setIsOpen(true);
+    setCartProducts((prevProducts) => [...prevProducts, product]);
+  };
+
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
@@ -63,36 +64,37 @@ const Home = () => {
               <div className="mt-4 flex justify-between">
                 <div>
                   <p className="text-sm text-gray-700">
-				  <button
-                  className="ml-12 text-sm font-medium text-gray-900"
-                  onClick={() =>{
-					addToCart(product)
-				  } 
-				}
-                >
-                  Add to Cart
-                </button>
-                <button
-                  className="ml-5 text-sm font-medium text-gray-900"
-                  onClick={() => removeFromCart(product.id)}
-                >
-                  Remove from Cart
-                </button>
+                    <button
+                      className="ml-12 text-sm font-medium text-gray-900"
+                      onClick={() => {
+                        handleAddToCart(product);
+						console.log(product);
+						
+                      }}
+                    >
+                      Add to Cart
+                    </button>
+                    <button
+                      className="ml-5 text-sm font-medium text-gray-900"
+                      onClick={() => removeFromCart(product.id)}
+                    >
+                      Remove from Cart
+                    </button>
                   </p>
                   <p className="mt-1 text-sm text-gray-500">{product.color}</p>
                 </div>
                 <p className="text-sm font-medium text-gray-900">{product.price}</p>
               </div>
-              <div className="flex mt-4 justify-between">
-         
-              </div>
+              <div className="flex mt-4 justify-between"></div>
             </div>
           ))}
         </div>
       </div>
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">Shopping Cart</h2>
-		{cartItems ? <Example  isOpen={isOpen} setIsOpen={setIsOpen} removeFromCart={removeFromCart}/> : cartItems > 0 }
+        {cartItems.length > 0 && (
+           <Example isOpen={isOpen} setIsOpen={setIsOpen} removeFromCart={removeFromCart} addToCart={addToCart} products={products} />
+        )}
       </div>
     </div>
   );
