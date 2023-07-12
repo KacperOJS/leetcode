@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 import Example from './ShoppingCart';
+
+
 interface Product {
   id: string;
   name: string;
@@ -38,17 +40,12 @@ const Home = () => {
 	setIsOpen(true)
 	console.log(cartItems);
 	console.log(isOpen);
-	
-	
-
-	
   };
 
   const removeFromCart = (productId: string) => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== productId));
     console.log(productId);
   };
-
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
@@ -68,7 +65,10 @@ const Home = () => {
                   <p className="text-sm text-gray-700">
 				  <button
                   className="ml-12 text-sm font-medium text-gray-900"
-                  onClick={() => addToCart(product)}
+                  onClick={() =>{
+					addToCart(product)
+				  } 
+				}
                 >
                   Add to Cart
                 </button>

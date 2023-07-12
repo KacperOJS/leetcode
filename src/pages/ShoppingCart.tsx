@@ -30,15 +30,26 @@ interface ExampleProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   removeFromCart: (productId: string) => void;
+//   addToCart:(product:string)=>void; 
 }
 
-const Example = ({ isOpen, setIsOpen, removeFromCart }: ExampleProps) => {
+const Example = ({ isOpen, setIsOpen, removeFromCart, }: ExampleProps) => {
   const [cartProducts, setCartProducts] = useState<any>([...products]);
 
   const totalAmount = cartProducts.reduce(
     (total: number, product: any) => total + parseFloat(product.price.slice(1)),
     0
   );
+  if(totalAmount === 0) {
+	setIsOpen(false);
+  }
+//   const PassingDataToObject =()=>{
+// 	setCartItems((prevItems) => [...prevItems, product]);
+// 	setIsOpen(true)
+// 	console.log(cartItems);
+// 	console.log(isOpen);
+//   }
+  
 
   const handleRemoveFromCart = (productId: string) => {
     const updatedCartProducts = cartProducts.filter((product: any) => product.id !== productId);
