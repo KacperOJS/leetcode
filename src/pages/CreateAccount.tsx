@@ -26,7 +26,6 @@ const CreateAccount = () => {
 				setPassword('');
 				setEmail('');
 		}
-		  // Check the response and handle accordingly
 		  if (response.data.success) {
 			alert('User created')
 			navigate('/login')

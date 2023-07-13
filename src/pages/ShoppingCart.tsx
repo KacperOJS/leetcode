@@ -29,6 +29,15 @@ const Example = ({ isOpen, setIsOpen, cartItems,setCartItems }: ExampleProps) =>
 //     setCartProducts((prevProducts) => [...prevProducts, product]);
 //     setIsOpen(true);
 //   };
+const handleQuantityChange = (productId: string, quantity: number) => {
+	const updatedCartItems = cartItems.map((item: Product) => {
+	  if (item.id === productId) {
+		return { ...item, quantity }; 
+	  }
+	  return item;
+	});
+	setCartItems(updatedCartItems);
+  };
 
 
   return (
@@ -98,6 +107,32 @@ const Example = ({ isOpen, setIsOpen, cartItems,setCartItems }: ExampleProps) =>
                             <div className="ml-4">
                               <h4 className="text-sm font-medium text-gray-900">{product.name}</h4>
                               <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+							  <select
+  className="text-gray-900 focus:ring-blue-500 focus:border-blue-500 block w-[80px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+  value={product.quantity}
+  onChange={(e) => {
+    const updatedCartItems = cartItems.map((item: Product) => {
+      if (item.id === product.id) {
+        const quantity = parseInt(e.target.value);
+        const price = `$${(35 * quantity).toFixed(2)}`;
+
+        return {
+          ...item,
+          quantity,
+          price,
+        };
+      }
+      return item;
+    });
+    setCartItems(updatedCartItems);
+  }}
+>
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+</select>
+
                               <p className="mt-1 text-sm text-gray-500">Qty {product.quantity}</p>
                             </div>
                           </div>
@@ -119,6 +154,7 @@ const Example = ({ isOpen, setIsOpen, cartItems,setCartItems }: ExampleProps) =>
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
                       <p>{`${totalAmount.toFixed(2)}$`}</p>
+
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                     <div className="mt-6">
