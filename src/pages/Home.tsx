@@ -29,13 +29,6 @@ const Home = () => {
     // More products...
   ]);
   
-  const [cartProducts, setCartProducts] = useState<Product[]>([]); // Add this line
-
-  const addToCart = (product: Product) => {
-    setCartItems((prevItems) => [...prevItems, product]);
-    setIsOpen(true);
-    setCartProducts((prevProducts) => [...prevProducts, product]);
-  };
 
   const removeFromCart = (productId: string) => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== productId));
@@ -44,7 +37,6 @@ const Home = () => {
   const handleAddToCart = (product: Product) => {
     setCartItems((prevItems) => [...prevItems, product]);
     setIsOpen(true);
-    setCartProducts((prevProducts) => [...prevProducts, product]);
   };
 
   return (
@@ -93,7 +85,12 @@ const Home = () => {
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">Shopping Cart</h2>
         {cartItems.length > 0 && (
-           <Example isOpen={isOpen} setIsOpen={setIsOpen} removeFromCart={removeFromCart} addToCart={addToCart} products={products} />
+           <Example 
+		   isOpen={isOpen} 
+		   setIsOpen={setIsOpen} 
+		   cartItems={cartItems}
+		   setCartItems={setCartItems}
+		    />
         )}
       </div>
     </div>

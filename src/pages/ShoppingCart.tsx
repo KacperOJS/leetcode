@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { Product } from './Types';
@@ -6,14 +6,13 @@ import { Product } from './Types';
 interface ExampleProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  removeFromCart: (productId: string) => void;
-  addToCart: (product: Product) => void;
-  products: Product[];
+  cartItems: Product[];
+  setCartItems: (cartItems: Product[]) => void;
 }
 
-const Example = ({ isOpen, setIsOpen, removeFromCart, addToCart, products }: ExampleProps) => {
-  const [cartProducts, setCartProducts] = useState<Product[]>([]);
-  const totalAmount = cartProducts.reduce((total: number, product: any) => total + parseFloat(product.price.slice(1)), 0);
+const Example = ({ isOpen, setIsOpen, cartItems,setCartItems }: ExampleProps) => {
+//   const [cartProducts, setCartProducts] = useState<Product[]>([]);
+  const totalAmount = cartItems.reduce((total: number, product: any) => total + parseFloat(product.price.slice(1)), 0);
 
   useEffect(() => {
     if (totalAmount === 0) {
@@ -22,14 +21,14 @@ const Example = ({ isOpen, setIsOpen, removeFromCart, addToCart, products }: Exa
   }, [totalAmount, setIsOpen]);
 
   const handleRemoveFromCart = (productId: string) => {
-    const updatedCartProducts = cartProducts.filter((product: any) => product.id !== productId);
-    setCartProducts(updatedCartProducts);
+    const updatedCartItems = cartItems.filter((item: Product) => item.id !== productId);
+    setCartItems(updatedCartItems);
   };
-
-  const handleAddToCart = (product: Product) => {
-    setCartProducts((prevProducts) => [...prevProducts, product]);
-    setIsOpen(true);
-  };
+  
+//   const handleAddToCart = (product: Product) => {
+//     setCartProducts((prevProducts) => [...prevProducts, product]);
+//     setIsOpen(true);
+//   };
 
 
   return (
@@ -85,7 +84,7 @@ const Example = ({ isOpen, setIsOpen, removeFromCart, addToCart, products }: Exa
                   </div>
 
                   <ul role="list" className="mt-2">
-                    {cartProducts.map((product:any) => (
+                    {cartItems.map((product:any) => (
                       <li key={product.id} className="border-t border-gray-200">
                         <div className="flex items-start justify-between px-4 sm:px-6 pt-4 pb-6">
                           <div className="flex items-start">
