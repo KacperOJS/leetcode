@@ -10,9 +10,8 @@ interface ExampleProps {
   setCartItems: (cartItems: Product[]) => void;
 }
 
-const Example = ({ isOpen, setIsOpen, cartItems,setCartItems }: ExampleProps) => {
-//   const [cartProducts, setCartProducts] = useState<Product[]>([]);
-  const totalAmount = cartItems.reduce((total: number, product: any) => total + parseFloat(product.price.slice(1)), 0);
+const Example = ({ isOpen, setIsOpen, cartItems, setCartItems }: ExampleProps) => {
+  const totalAmount = cartItems.reduce((total: number, product: Product) => total + product.price * product.quantity, 0);
 
   useEffect(() => {
     if (totalAmount === 0) {
@@ -24,21 +23,21 @@ const Example = ({ isOpen, setIsOpen, cartItems,setCartItems }: ExampleProps) =>
     const updatedCartItems = cartItems.filter((item: Product) => item.id !== productId);
     setCartItems(updatedCartItems);
   };
-  
-//   const handleAddToCart = (product: Product) => {
-//     setCartProducts((prevProducts) => [...prevProducts, product]);
-//     setIsOpen(true);
-//   };
-const handleQuantityChange = (productId: string, quantity: number) => {
-	const updatedCartItems = cartItems.map((item: Product) => {
-	  if (item.id === productId) {
-		return { ...item, quantity }; 
-	  }
-	  return item;
-	});
-	setCartItems(updatedCartItems);
-  };
 
+  const handleQuantityChange = (productId: string, quantity: number) => {
+    const updatedCartItems = cartItems.map((item: Product) => {
+      if (item.id === productId) {
+        return {
+          ...item,
+          quantity,
+        };
+      }
+      return item;
+    });
+
+    setCartItems(updatedCartItems);
+  };
+  
 
   return (
     <Transition.Root show={isOpen} as={Fragment}>
@@ -110,22 +109,7 @@ const handleQuantityChange = (productId: string, quantity: number) => {
 							  <select
   className="text-gray-900 focus:ring-blue-500 focus:border-blue-500 block w-[80px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
   value={product.quantity}
-  onChange={(e) => {
-    const updatedCartItems = cartItems.map((item: Product) => {
-      if (item.id === product.id) {
-        const quantity = parseInt(e.target.value);
-        const price = `$${(35 * quantity).toFixed(2)}`;
-
-        return {
-          ...item,
-          quantity,
-          price,
-        };
-      }
-      return item;
-    });
-    setCartItems(updatedCartItems);
-  }}
+  onChange={(e) => handleQuantityChange(product.id, parseInt(e.target.value))}
 >
   <option value="1">1</option>
   <option value="2">2</option>
@@ -137,7 +121,7 @@ const handleQuantityChange = (productId: string, quantity: number) => {
                             </div>
                           </div>
                           <div className="flex-shrink-0">
-                            <p className="text-sm font-medium text-gray-900">{product.price}</p>
+                            <p className="text-sm font-medium text-gray-900">{product.price.toFixed(2)}$</p>
                             <button
                               className="font-medium text-indigo-600 hover:text-indigo-500"
                               onClick={() => handleRemoveFromCart(product.id)}

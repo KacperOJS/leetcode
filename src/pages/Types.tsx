@@ -4,8 +4,8 @@ export interface Product {
 	href: string;
 	imageSrc: string;
 	imageAlt: string;
-	price: string;
+	price: number; // Updated to string type
 	color: string;
-	quantity:number;
+	quantity: number;
   }
   
